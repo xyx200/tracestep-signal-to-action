@@ -4,7 +4,7 @@ Validated on October 30, 2026, Asia/Shanghai. This reports actual fixture and br
 
 ## Automated checks
 
-- **18 / 18 behavioral tests passed**, using Node.js v24.19.0 and the built-in test runner.
+- **22 / 22 behavioral tests passed** after the independent review, using Node.js v24.19.0 and the built-in test runner (18 original checks plus 4 regression checks).
 - `node --check dist/engine.js` and `node --check dist/app.js` passed.
 - Tests include year-boundary relative dates, invalid dates, ambiguous dates, negative/completed lines, unknown owners, duplicates, blockers, confirmation gating, next-step ordering, Markdown escaping, source-integrity validation, CRLF lines, generic pronouns and input limits.
 - Two issues found during early testing were resolved: `Priority: high` was not recognized, and an initial escaping assertion incorrectly searched for a substring inside an escaped string. Final tests passed after correction. Later ownership and size limits were added and tested.
@@ -37,6 +37,15 @@ The download-event API timed out, but export success was established by inspecti
 - `evidence/03-confirmed-filter.jpg`: confirmed-only state after manual review.
 
 ## Verification boundaries
+
+Independent review on October 30, 2026, around 02:10 Asia/Shanghai reproduced and fixed four failures before rerunning the engine tests:
+
+- A nonexistent evidence line with an omitted quote was accepted because both compared values were `undefined`. Imports now require an actual string quote and an in-range source line.
+- “Tomorrow” anchored to `9999-12-31` produced a malformed date. It now remains unresolved, with a manual-review note.
+- An imported confirmed action with a whitespace-only owner could be recommended despite an “Owner missing” warning. Ready recommendations now use the same missing-field checks, including valid calendar dates.
+- Extracting owner metadata over 160 characters created a workspace rejected by its own importer. Extraction now fails explicitly; a 160-character owner round-trip passes without truncation.
+
+All four added checks failed on the prior implementation and passed after the fixes. Exact quote preservation, Markdown escaping, normal date boundaries and suggested/confirmed/done/dismissed behavior also passed. The modified engine passed JavaScript syntax validation. No additional browser or mobile verification is claimed by this review.
 
 - A direct `file:` browser test was rejected by the browser tool's URL security policy. It was not bypassed. The verified runtime method is the optional local HTTP preview; direct opening is supported by the buildless structure but was not exercised by this tool.
 - A 390 × 844 viewport override did not change the actual viewport, which remained 1280 × 720. No mobile test success is claimed. Responsive CSS is present but still needs a real small-screen pass.

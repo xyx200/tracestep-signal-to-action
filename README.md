@@ -52,6 +52,8 @@ Task: Verify keyboard navigation; blocked by the missing staging build.
 
 `Action:`, `Action item:`, `Task:`, `TODO:` and unchecked checkboxes are explicit markers. Owner and due metadata use a pipe or semicolon separator. Explicit dates use `YYYY-MM-DD`. Priority can be `Priority: high`, `[high]`, `urgent`, `critical`, `P0` or `P1`.
 
+Owner metadata is limited to 160 characters. An overlong owner produces an explicit extraction error so the app does not create a plan that cannot be reopened. Relative dates beyond the four-digit calendar range remain unresolved for manual review.
+
 `Decision:`, `Context:`, `Note:`, `Question:`, `Idea:`, `Maybe:` and `Consider:` lines are excluded. Checked boxes, `Done:`, `Completed:` and leading `Do not` / `Don't` / `Never` / `No need to` statements are excluded.
 
 ## Deliberate limits

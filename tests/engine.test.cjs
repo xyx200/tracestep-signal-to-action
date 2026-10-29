@@ -24,3 +24,31 @@ test('multilingual owner is preserved in explicit metadata',()=>{const a=E.extra
 test('CRLF line numbers remain faithful',()=>{const a=E.extract([s('Context\r\n\r\nTask: Send guide')]).actions[0];assert.equal(a.evidence[0].line,3);assert.equal(a.evidence[0].quote,'Task: Send guide');});
 test('generic pronouns and TBD do not become confirmed owners',()=>{const actions=E.extract([s('We will send the guide by 2026-10-30\nAction: Review summary | Owner: TBD | Due: 2026-10-30')]).actions;assert.equal(actions.length,2);actions.forEach(a=>{assert.equal(a.owner,'');a.status='accepted';});assert.equal(E.nextStep(actions,'2026-10-29').kind,'review');});
 test('large or highly repeated inputs fail explicitly instead of silently truncating',()=>{assert.throws(()=>E.extract([s(Array.from({length:1001},(_,i)=>'Task: Review item '+i).join('\n'))]),/1,000/);assert.throws(()=>E.extract([s(Array(101).fill('Task: Review item').join('\n'))]),/100 repeated/);assert.throws(()=>E.extract([s('x'.repeat(100001))]),/100,000/);});
+
+test('import rejects nonexistent evidence lines even when the quote is missing',()=>{
+  const source=s('Task: Send guide');
+  const p={format:'tracestep',version:1,sources:[source],actions:E.extract([source]).actions};
+  for(const quote of [undefined,null,42,'']) {
+    p.actions[0].evidence=[{sourceId:source.id,line:999999,quote}];
+    assert.throws(()=>E.validateProject(JSON.parse(JSON.stringify(p))),/Evidence/);
+  }
+});
+
+test('relative dates outside the supported calendar remain unresolved',()=>{
+  const due=E.extractDue('Send tomorrow','9999-12-31');
+  assert.equal(due.due,''); assert.match(due.dueNote,/confirm|range/i);
+  assert.equal(E.extractDue('Send today','9999-12-31').due,'9999-12-31');
+});
+
+test('whitespace-only owners and invalid dates never become a ready step',()=>{
+  const a=E.extract([s('Task: Send guide | Owner: Maya | Due: 2026-10-30')]).actions[0]; a.status='accepted';
+  a.owner='  '; assert.equal(E.nextStep([a],'2026-10-29').kind,'review');
+  a.owner='Maya'; a.due='+010000-01'; assert.equal(E.nextStep([a],'2026-10-29').kind,'review');
+});
+
+test('overlong extracted owners fail explicitly before creating an unsaveable plan',()=>{
+  assert.throws(()=>E.extract([s('Task: Review notes | Owner: '+'A'.repeat(161))]),/Owner.*160/i);
+  const source=s('Task: Review notes | Owner: '+'A'.repeat(160));
+  const p={format:'tracestep',version:1,referenceDate:'2026-10-29',sources:[source],actions:E.extract([source]).actions};
+  assert.deepEqual(E.validateProject(JSON.parse(JSON.stringify(p))),p);
+});

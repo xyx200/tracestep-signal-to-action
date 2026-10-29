@@ -22,7 +22,10 @@
     const explicit = text.match(/\b(?:due|by|before|on)\s*:?\s*(\d{4}-\d{2}-\d{2})\b/i);
     if (explicit) return { due: validDate(explicit[1]) ? explicit[1] : '', dueRaw: explicit[1], dueNote: validDate(explicit[1]) ? 'Explicit date in source' : 'Invalid date; confirm manually' };
     const relative = text.match(/\b(?:due|by|before|on)?\s*(today|tomorrow)\b/i);
-    if (relative) return { due: validDate(anchor) ? shiftDate(anchor, /^tomorrow$/i.test(relative[1]) ? 1 : 0) : '', dueRaw: relative[1], dueNote: validDate(anchor) ? 'Relative to the source date you supplied' : 'Relative date needs a source date' };
+    if (relative) {
+      const shifted = validDate(anchor) ? shiftDate(anchor, /^tomorrow$/i.test(relative[1]) ? 1 : 0) : '';
+      return { due: validDate(shifted) ? shifted : '', dueRaw: relative[1], dueNote: !validDate(anchor) ? 'Relative date needs a source date' : validDate(shifted) ? 'Relative to the source date you supplied' : 'Date outside supported range; confirm manually' };
+    }
     const ambiguous = text.match(/\b(?:due|by|before|on)\s*:?\s*((?:next |this )?(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)|next week|EOD|end of (?:day|week)|\d{1,2}[\/.-]\d{1,2}(?:[\/.-]\d{2,4})?)/i);
     return { due: '', dueRaw: ambiguous ? ambiguous[1] : '', dueNote: ambiguous ? 'Ambiguous date; confirm manually' : 'No date stated' };
   }
@@ -47,6 +50,7 @@
     else if (verbStart.test(text)) reason.push('Action verb at start of line');
     else return null;
     if (/^(?:tbd|unknown|unassigned|none|n\/a|\?)$/i.test(owner)) owner = '';
+    if (owner.length > 160) throw new Error('Owner must be at most 160 characters. Shorten the owner metadata before extracting.');
     const due = extractDue(raw, source.date);
     const blocked = /\b(?:blocked(?:\s+by|\s*:)?|waiting (?:on|for)|depends on)\b/i.test(raw);
     const priority = /\b(?:urgent|critical|p0|p1)\b|\[high\]|\bpriority\s*:\s*high\b/i.test(raw) ? 'high' : 'normal';
@@ -80,7 +84,7 @@
   function gaps(item) {
     const list = [];
     if (!item.owner.trim()) list.push('Owner missing');
-    if (!item.due) list.push(item.dueRaw ? 'Confirm date: ' + item.dueRaw : 'Date missing');
+    if (!validDate(item.due)) list.push(item.dueRaw ? 'Confirm date: ' + item.dueRaw : 'Date missing');
     if (item.blocked) list.push('Blocked');
     return list;
   }
@@ -92,7 +96,7 @@
   }
   function nextStep(actions, today) {
     const ordered = rank(actions, today);
-    const ready = ordered.find(a => a.status === 'accepted' && !a.blocked && a.owner && a.due);
+    const ready = ordered.find(a => a.status === 'accepted' && gaps(a).length === 0);
     if (ready) return { kind: 'ready', action: ready, label: 'Your next confirmed step', explanation: 'Confirmed, assigned and unblocked. Priority and due date determine the order.' };
     if (ordered.length) return { kind: 'review', action: ordered[0], label: 'Review before you act', explanation: 'Confirm a suggestion and resolve its missing fields before treating it as a plan.' };
     return { kind: 'empty', action: null, label: 'A clear place to start', explanation: 'Add notes, find action candidates, then confirm the steps that matter.' };
@@ -125,8 +129,9 @@
       const item = { id: string(a.id, 100), title: string(a.title, 100000), owner: string(a.owner, 160), due: a.due && validDate(a.due) ? a.due : '', dueRaw: string(a.dueRaw || '', 160), dueNote: string(a.dueNote || '', 300), priority: a.priority, blocked: !!a.blocked, status: a.status, reasons: Array.isArray(a.reasons) ? a.reasons.slice(0, 10).map(x => string(x, 200)) : [], evidence: [] };
       if (!item.id || actionIds.has(item.id)) throw new Error('Action IDs must be unique.'); actionIds.add(item.id);
       for (const e of a.evidence) {
+        if (!e || typeof e.quote !== 'string') throw new Error('Evidence must include an exact source quote.');
         const source = clean.sources.find(s => s.id === e.sourceId);
-        if (!source || !Number.isInteger(e.line) || e.line < 1 || sourceLines.get(source.id)[e.line - 1] !== e.quote) throw new Error('Evidence no longer matches its source line.');
+        if (!source || !Number.isInteger(e.line) || e.line < 1 || e.line > sourceLines.get(source.id).length || sourceLines.get(source.id)[e.line - 1] !== e.quote) throw new Error('Evidence no longer matches its source line.');
         item.evidence.push({sourceId: source.id, sourceTitle: source.title, date: source.date, line: e.line, quote: e.quote});
       }
       clean.actions.push(item);
