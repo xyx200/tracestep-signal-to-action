@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Turn scattered meeting notes into a source-linked, editable action plan. Private by design, no account or API key required.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>TraceStep — from notes to next steps</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="engine.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to workspace</a>
+  <div class="shell">
+    <aside class="rail" aria-label="Workspace navigation">
+      <a class="brand" href="#main" aria-label="TraceStep home"><span class="brand-mark">↗</span><span>TraceStep<span class="brand-sub">A little clarity. A next step.</span></span></a>
+      <div class="rail-label">YOUR WORKSPACE</div>
+      <a class="nav-item active" href="#sources"><span>01</span> Gather signals</a>
+      <a class="nav-item" href="#plan"><span>02</span> Shape the plan</a>
+      <a class="nav-item" href="#about"><span>03</span> How it works</a>
+      <div class="rail-note"><span class="status-dot"></span><strong>Stays on your device</strong><p>No uploads. No account.<br>No API key.</p><small>Your workspace lives in this tab until you save it as a file.</small></div>
+      <div class="rail-bottom">SIGNAL TO ACTION<br><span>October 2026 · Original prototype</span></div>
+    </aside>
+    <main id="main">
+      <header class="topbar"><span class="eyebrow">THE NOTES → ACTION WORKSPACE</span><div class="top-actions"><button id="open-workspace" class="quiet">Open workspace</button><button id="save-workspace" class="quiet">Save workspace ↓</button></div></header>
+      <section class="intro"><div><div class="eyebrow accent">LESS SCROLLING. MORE DOING.</div><h1>Find the next step.<br><span>Keep the evidence.</span></h1><p>Turn scattered meeting notes into an editable plan.<br>Every suggestion points back to the words that started it.</p></div><div class="intro-mark" aria-hidden="true"><span>notes</span><i>↗</i><strong>next</strong></div></section>
+      <div class="workflow-meta"><span class="pill"><span class="status-dot"></span> Local rule-based extraction</span><label for="reference-date">Plan reference date <input id="reference-date" type="date"></label></div>
+      <section class="workspace-grid">
+        <section class="panel source-panel" id="sources" aria-labelledby="source-heading">
+          <div class="section-heading"><div><span class="step-label">01 / INPUT</span><h2 id="source-heading">Gather your signals</h2></div><span id="source-count" class="count">0 sources</span></div>
+          <div class="source-tabs" id="source-tabs" role="group" aria-label="Sources"></div>
+          <div class="source-editor">
+            <label for="source-title">Source name</label><input id="source-title" maxlength="160" placeholder="e.g. Weekly launch meeting">
+            <div class="source-date"><label for="source-date">Date of these notes <span>(optional)</span></label><input id="source-date" type="date"></div>
+            <label for="source-text">Notes <span class="label-hint">One thought per line works best</span></label>
+            <textarea id="source-text" spellcheck="false" maxlength="100000" placeholder="Action: Review the launch checklist | Owner: Maya | Due: 2026-10-30&#10;Alex will send the draft tomorrow.&#10;Decision: Keep the first release small."></textarea>
+            <div class="editor-foot"><span id="char-count">0 characters</span><button id="remove-source" class="text-button">Remove source</button></div>
+          </div>
+          <div class="source-tools"><button id="add-source" class="secondary">+ Add source</button><button id="import-text" class="secondary">Import .txt / .md</button></div>
+          <button id="extract" class="primary wide">Find next steps <span>↗</span></button>
+          <div id="rebuild-confirm" class="confirm-box" hidden><p>Finding steps again replaces the current plan and its edits. Save a workspace first if you want to keep them.</p><button id="confirm-rebuild" class="primary">Replace plan</button><button id="cancel-rebuild" class="secondary">Keep current plan</button></div>
+          <p class="fineprint">Literal patterns, not a language model. Suggestions need your review.</p>
+          <button id="load-demo" class="demo-link">Try the product-launch example →</button>
+        </section>
+        <section class="output-column" id="plan" aria-labelledby="plan-heading">
+          <div class="next-card"><div class="next-top"><span class="step-label">THE NEXT USEFUL THING</span><span class="next-icon">↗</span></div><h2 id="next-heading">A clear place to start</h2><p id="next-title">Bring a few notes. Leave with a plan you can explain.</p><div id="next-meta"></div><p id="next-explanation" class="next-explanation">Confirm a suggestion and resolve its missing fields before treating it as a plan.</p><button id="next-open" class="next-button" hidden>Review this step →</button></div>
+          <div class="panel plan-panel"><div class="section-heading"><div><span class="step-label">02 / OUTPUT</span><h2 id="plan-heading">Your action plan</h2></div><button id="export-md" class="quiet" disabled>Export Markdown ↓</button></div>
+            <div id="stats" class="stats"><div><strong id="stat-actions">0</strong><span>candidates</span></div><div><strong id="stat-ready">0</strong><span>confirmed</span></div><div><strong id="stat-review">0</strong><span>with gaps</span></div><div><strong id="stat-evidence">0</strong><span>source links</span></div></div>
+            <div class="filterbar" role="group" aria-label="Filter actions"><button class="filter selected" data-filter="all" aria-pressed="true">All steps</button><button class="filter" data-filter="review" aria-pressed="false">Needs review</button><button class="filter" data-filter="accepted" aria-pressed="false">Confirmed</button><button class="filter" data-filter="done" aria-pressed="false">Done</button><button class="filter" data-filter="dismissed" aria-pressed="false">Dismissed</button></div>
+            <div id="actions" class="action-list"><div class="empty"><div class="empty-symbol">≋</div><h3>Your notes have a next chapter.</h3><p>Add a source on the left, or try the example.<br>We’ll surface explicit action candidates and their evidence.</p></div></div>
+          </div>
+        </section>
+      </section>
+      <section id="about" class="about"><div><span class="step-label">03 / A CLEAR PROCESS</span><h2>Small rules. Visible reasoning.</h2></div><div><h3>1. Find explicit commitments</h3><p>Action markers, checkboxes, action verbs and named commitments become suggestions. No hidden model or paid service.</p></div><div><h3>2. Keep uncertainty visible</h3><p>Missing owners, ambiguous dates and blockers stay visible. “Tomorrow” uses the date of its source, never a guess.</p></div><div><h3>3. Make it yours</h3><p>Edit, confirm, dismiss or finish each step. Export a plan with quotes, or save a workspace to resume later.</p></div></section>
+      <footer>Built for small teams who need a clear meeting follow-up.<span>AI-assisted development · No AI inference at runtime · MIT</span></footer>
+    </main>
+  </div>
+  <dialog id="detail-dialog" aria-labelledby="detail-heading"><div class="dialog-head"><div><span class="step-label">TRACE THE STEP</span><h2 id="detail-heading">Review this action</h2></div><button id="close-detail" class="icon-button" aria-label="Close action details">×</button></div><div id="detail-content"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <input id="text-file" type="file" accept=".txt,.md,text/plain,text/markdown" multiple hidden><input id="workspace-file" type="file" accept=".json,application/json" hidden>
+</body>
+</html>

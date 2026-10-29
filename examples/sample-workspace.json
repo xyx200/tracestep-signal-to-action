@@ -1,0 +1,218 @@
+{
+  "format": "tracestep",
+  "version": 1,
+  "referenceDate": "2026-10-29",
+  "sources": [
+    {
+      "id": "source-1793295608461-2",
+      "title": "Launch sync",
+      "text": "# Product launch — Thursday sync\nDecision: Ship the small pilot before adding a dashboard.\nAction: Review the launch checklist | Owner: Maya | Due: 2026-10-30\nLeo will send the pilot invitation tomorrow.\nTask: Publish the onboarding guide | Owner: Jo | Due: 2026-10-31\nContext: Five volunteers have offered to try the pilot.\nAction: Confirm the accessibility test owner by Friday.\n[x] Archive the old planning board.",
+      "date": "2026-10-29"
+    },
+    {
+      "id": "source-1793295608461-3",
+      "title": "Pilot feedback",
+      "text": "# Synthetic pilot feedback\nNote: Two volunteers could not find the help link.\nAction: Add a visible help link | Owner: Sam | Due: 2026-10-30 | Priority: high\nTask: Verify keyboard navigation; blocked by the missing staging build.\nIdea: Consider a new analytics dashboard later.\nAction: Review the launch checklist | Owner: Maya | Due: 2026-10-30",
+      "date": "2026-10-29"
+    },
+    {
+      "id": "source-1793295608461-4",
+      "title": "Team follow-up",
+      "text": "# Synthetic follow-up notes\n@Maya prepare three questions for the pilot debrief by 2026-11-02.\nDecision: Keep analytics out of this pilot.\nTask: Schedule the debrief with volunteers.\nDone: Share the meeting agenda.\nDo not publish volunteer contact details.",
+      "date": "2026-10-29"
+    }
+  ],
+  "actions": [
+    {
+      "id": "action-1",
+      "title": "Review the launch checklist",
+      "owner": "Maya",
+      "due": "2026-10-30",
+      "dueRaw": "2026-10-30",
+      "dueNote": "Explicit date in source",
+      "priority": "normal",
+      "blocked": false,
+      "status": "accepted",
+      "reasons": [
+        "Explicit action marker"
+      ],
+      "evidence": [
+        {
+          "sourceId": "source-1793295608461-2",
+          "sourceTitle": "Launch sync",
+          "line": 3,
+          "quote": "Action: Review the launch checklist | Owner: Maya | Due: 2026-10-30",
+          "date": "2026-10-29"
+        },
+        {
+          "sourceId": "source-1793295608461-3",
+          "sourceTitle": "Pilot feedback",
+          "line": 6,
+          "quote": "Action: Review the launch checklist | Owner: Maya | Due: 2026-10-30",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "action-2",
+      "title": "send the pilot invitation tomorrow.",
+      "owner": "Leo",
+      "due": "2026-10-30",
+      "dueRaw": "tomorrow",
+      "dueNote": "Relative to the source date you supplied",
+      "priority": "normal",
+      "blocked": false,
+      "status": "suggested",
+      "reasons": [
+        "Named commitment"
+      ],
+      "evidence": [
+        {
+          "sourceId": "source-1793295608461-2",
+          "sourceTitle": "Launch sync",
+          "line": 4,
+          "quote": "Leo will send the pilot invitation tomorrow.",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "action-3",
+      "title": "Publish the onboarding guide",
+      "owner": "Jo",
+      "due": "2026-10-31",
+      "dueRaw": "2026-10-31",
+      "dueNote": "Explicit date in source",
+      "priority": "normal",
+      "blocked": false,
+      "status": "suggested",
+      "reasons": [
+        "Explicit action marker"
+      ],
+      "evidence": [
+        {
+          "sourceId": "source-1793295608461-2",
+          "sourceTitle": "Launch sync",
+          "line": 5,
+          "quote": "Task: Publish the onboarding guide | Owner: Jo | Due: 2026-10-31",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "action-4",
+      "title": "Confirm the accessibility test owner by Friday.",
+      "owner": "",
+      "due": "",
+      "dueRaw": "Friday",
+      "dueNote": "Ambiguous date; confirm manually",
+      "priority": "normal",
+      "blocked": false,
+      "status": "suggested",
+      "reasons": [
+        "Explicit action marker"
+      ],
+      "evidence": [
+        {
+          "sourceId": "source-1793295608461-2",
+          "sourceTitle": "Launch sync",
+          "line": 7,
+          "quote": "Action: Confirm the accessibility test owner by Friday.",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "action-5",
+      "title": "Add a visible help link",
+      "owner": "Sam",
+      "due": "2026-10-30",
+      "dueRaw": "2026-10-30",
+      "dueNote": "Explicit date in source",
+      "priority": "high",
+      "blocked": false,
+      "status": "suggested",
+      "reasons": [
+        "Explicit action marker"
+      ],
+      "evidence": [
+        {
+          "sourceId": "source-1793295608461-3",
+          "sourceTitle": "Pilot feedback",
+          "line": 3,
+          "quote": "Action: Add a visible help link | Owner: Sam | Due: 2026-10-30 | Priority: high",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "action-6",
+      "title": "Verify keyboard navigation; blocked by the missing staging build.",
+      "owner": "",
+      "due": "",
+      "dueRaw": "",
+      "dueNote": "No date stated",
+      "priority": "normal",
+      "blocked": true,
+      "status": "suggested",
+      "reasons": [
+        "Explicit action marker"
+      ],
+      "evidence": [
+        {
+          "sourceId": "source-1793295608461-3",
+          "sourceTitle": "Pilot feedback",
+          "line": 4,
+          "quote": "Task: Verify keyboard navigation; blocked by the missing staging build.",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "action-7",
+      "title": "prepare three questions for the pilot debrief by 2026-11-02.",
+      "owner": "Maya",
+      "due": "2026-11-02",
+      "dueRaw": "2026-11-02",
+      "dueNote": "Explicit date in source",
+      "priority": "normal",
+      "blocked": false,
+      "status": "suggested",
+      "reasons": [
+        "@owner action"
+      ],
+      "evidence": [
+        {
+          "sourceId": "source-1793295608461-4",
+          "sourceTitle": "Team follow-up",
+          "line": 2,
+          "quote": "@Maya prepare three questions for the pilot debrief by 2026-11-02.",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "action-8",
+      "title": "Schedule the debrief with volunteers.",
+      "owner": "",
+      "due": "",
+      "dueRaw": "",
+      "dueNote": "No date stated",
+      "priority": "normal",
+      "blocked": false,
+      "status": "suggested",
+      "reasons": [
+        "Explicit action marker"
+      ],
+      "evidence": [
+        {
+          "sourceId": "source-1793295608461-4",
+          "sourceTitle": "Team follow-up",
+          "line": 4,
+          "quote": "Task: Schedule the debrief with volunteers.",
+          "date": "2026-10-29"
+        }
+      ]
+    }
+  ]
+}

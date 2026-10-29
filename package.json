@@ -1,0 +1,9 @@
+{
+  "name": "tracestep",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline, evidence-linked meeting follow-up. Original Signal to Action October 2026 prototype.",
+  "license": "MIT",
+  "scripts": { "test": "node --test tests/engine.test.cjs", "start": "node tools/serve.cjs", "check": "node --check dist/engine.js && node --check dist/app.js" },
+  "engines": { "node": ">=18" }
+}

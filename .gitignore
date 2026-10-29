@@ -1,0 +1,8 @@
+node_modules/
+.openai/
+*.zip
+evidence/*.html
+evidence/*onboarding*
+evidence/*account*
+evidence/browser-downloads/
+STATUS.json
